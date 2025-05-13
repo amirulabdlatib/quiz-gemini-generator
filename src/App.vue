@@ -1,4 +1,6 @@
-<script setup></script>
+<script setup>
+import StartScreen from "./components/StartScreen.vue";
+</script>
 
 <template>
   <div id="app">
@@ -9,4 +11,6 @@
       </div>
     </header>
   </div>
+
+  <StartScreen />
 </template>
