@@ -1,13 +1,15 @@
 <script setup>
 import StartScreen from "./components/StartScreen.vue";
+import Quiz from "./components/Quiz.vue";
+import Loader from "./components/Loader.vue";
 import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
 import { ref } from "vue";
 
 const question = ref("");
+const status = ref("start");
 
 const startQuiz = async (topic) => {
-  question.value = "Loading question...";
-
+  status.value = "loading";
   const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API);
 
   const schema = {
@@ -78,6 +80,7 @@ const startQuiz = async (topic) => {
   const result = await model.generateContent(`Create 5 quiz questions about ${topic} Difficulty: Easy to Medium Type: Multiple Choice`);
 
   question.value = result.response.text();
+  status.value = "ready";
 
   console.log(question.value);
 };
@@ -93,7 +96,9 @@ const startQuiz = async (topic) => {
     </header>
   </div>
 
-  <StartScreen @start-quiz="startQuiz" />
+  <StartScreen v-if="status == 'start'" @start-quiz="startQuiz" />
+  <Loader v-if="status == 'loading'" />
+  <Quiz v-if="status == 'ready'" />
 
   <p>{{ question }}</p>
 </template>
