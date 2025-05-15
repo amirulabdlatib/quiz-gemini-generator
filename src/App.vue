@@ -1,8 +1,19 @@
 <script setup>
 import StartScreen from "./components/StartScreen.vue";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import { ref } from "vue";
 
-const startQuiz = (topic) => {
-  alert("start quiz! " + topic);
+const question = ref("");
+
+const startQuiz = async (topic) => {
+  question.value = "Loading question...";
+
+  const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API);
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  const prompt = `Create multi-choice quiz question about ${topic}`;
+  const result = await model.generateContent(prompt);
+
+  question.value = result.response.text();
 };
 </script>
 
@@ -17,4 +28,6 @@ const startQuiz = (topic) => {
   </div>
 
   <StartScreen @start-quiz="startQuiz" />
+
+  <p>{{ question }}</p>
 </template>
