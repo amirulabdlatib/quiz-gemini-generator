@@ -1,5 +1,9 @@
 <script setup>
 import StartScreen from "./components/StartScreen.vue";
+
+const startQuiz = (topic) => {
+  alert("start quiz! " + topic);
+};
 </script>
 
 <template>
@@ -12,5 +16,5 @@ import StartScreen from "./components/StartScreen.vue";
     </header>
   </div>
 
-  <StartScreen />
+  <StartScreen @start-quiz="startQuiz" />
 </template>
