@@ -1,7 +1,13 @@
 <script setup>
+import { ref } from "vue";
+
 const props = defineProps(["questions"]);
 
-console.log(props.questions.results[0].question);
+const currentQuestion = ref(0);
+
+const submitAnswer = () => {
+  currentQuestion.value++;
+};
 </script>
 
 <template>
@@ -10,8 +16,10 @@ console.log(props.questions.results[0].question);
 
     <div class="question">
       <h3>
-        {{ props.questions.results[0].question }}
+        {{ props.questions.results[currentQuestion].question }}
       </h3>
     </div>
+
+    <button @click="submitAnswer">Send</button>
   </section>
 </template>
