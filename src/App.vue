@@ -103,5 +103,5 @@ const startQuiz = async (topic) => {
   <StartScreen v-if="status == 'start'" @start-quiz="startQuiz" />
   <Loader v-if="status == 'loading'" />
   <Quiz v-if="status == 'ready'" @end-quiz="status = 'finished'" @store-answer="storeAnswer" :questions="questions" />
-  <Result v-if="status == 'finished'" />
+  <Result v-if="status == 'finished'" :userAnswers="userAnswers" />
 </template>
