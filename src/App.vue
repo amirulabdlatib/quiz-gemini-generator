@@ -7,6 +7,11 @@ import { ref } from "vue";
 
 const questions = ref("");
 const status = ref("start");
+const userAnswers = ref([]);
+
+const storeAnswer = (answer) => {
+  userAnswers.value.push(answer);
+};
 
 const startQuiz = async (topic) => {
   status.value = "loading";
@@ -96,5 +101,5 @@ const startQuiz = async (topic) => {
 
   <StartScreen v-if="status == 'start'" @start-quiz="startQuiz" />
   <Loader v-if="status == 'loading'" />
-  <Quiz :questions="questions" v-if="status == 'ready'" />
+  <Quiz @store-answer="storeAnswer" :questions="questions" v-if="status == 'ready'" />
 </template>

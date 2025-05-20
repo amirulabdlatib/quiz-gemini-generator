@@ -2,8 +2,10 @@
 import { ref, computed } from "vue";
 
 const props = defineProps(["questions"]);
+const emit = defineEmits(["store-answer"]);
 
 const currentQuestion = ref(0);
+const selectedOption = ref(null);
 
 const shuffleOptions = computed(() => {
   let options = [...props.questions.results[currentQuestion.value].incorrect_answers];
@@ -16,6 +18,10 @@ const shuffleOptions = computed(() => {
 console.log(props.questions.results[currentQuestion.value].correct_answer);
 
 const submitAnswer = () => {
+  emit("store-answer", {
+    question: props.questions.results[currentQuestion.value],
+    userAnswer: selectedOption.value,
+  });
   currentQuestion.value++;
 };
 </script>
@@ -31,11 +37,11 @@ const submitAnswer = () => {
     </div>
 
     <div class="answers">
-      <button class="answer" v-for="answer in shuffleOptions" :key="answer">
+      <button class="answer" :class="{ active: answer === selectedOption }" v-for="answer in shuffleOptions" :key="answer" @click="selectedOption = answer">
         {{ answer }}
       </button>
     </div>
 
-    <button @click="submitAnswer">Send</button>
+    <button @click="submitAnswer" v-if="selectedOption">Send</button>
   </section>
 </template>
