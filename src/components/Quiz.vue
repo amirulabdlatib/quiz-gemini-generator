@@ -28,7 +28,11 @@ const submitAnswer = () => {
 
 <template>
   <section>
-    <h2>Quiz Component</h2>
+    <div class="header">
+      <h2>Quiz Component</h2>
+      <p>Question {{ currentQuestion + 1 }} of {{ props.questions.results.length }}</p>
+    </div>
+    <progress max="100" :value="((currentQuestion + 1) / props.questions.results.length) * 100"></progress>
 
     <div class="question">
       <h3>
