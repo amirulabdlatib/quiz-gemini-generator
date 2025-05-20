@@ -2,6 +2,7 @@
 import StartScreen from "./components/StartScreen.vue";
 import Quiz from "./components/Quiz.vue";
 import Loader from "./components/Loader.vue";
+import Result from "./components/Result.vue";
 import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
 import { ref } from "vue";
 
@@ -101,5 +102,6 @@ const startQuiz = async (topic) => {
 
   <StartScreen v-if="status == 'start'" @start-quiz="startQuiz" />
   <Loader v-if="status == 'loading'" />
-  <Quiz @store-answer="storeAnswer" :questions="questions" v-if="status == 'ready'" />
+  <Quiz v-if="status == 'ready'" @end-quiz="status = 'finished'" @store-answer="storeAnswer" :questions="questions" />
+  <Result v-if="status == 'finished'" />
 </template>

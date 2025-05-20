@@ -2,7 +2,7 @@
 import { ref, computed } from "vue";
 
 const props = defineProps(["questions"]);
-const emit = defineEmits(["store-answer"]);
+const emit = defineEmits(["store-answer", "end-quiz"]);
 
 const currentQuestion = ref(0);
 const selectedOption = ref(null);
@@ -22,7 +22,13 @@ const submitAnswer = () => {
     question: props.questions.results[currentQuestion.value],
     userAnswer: selectedOption.value,
   });
-  currentQuestion.value++;
+  selectedOption.value = null;
+
+  if (currentQuestion.value === props.questions.results.length - 1) {
+    emit("end-quiz");
+  } else {
+    currentQuestion.value++;
+  }
 };
 </script>
 
