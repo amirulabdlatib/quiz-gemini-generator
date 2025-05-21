@@ -15,8 +15,6 @@ const shuffleOptions = computed(() => {
   return options;
 });
 
-console.log(props.questions.results[currentQuestion.value].correct_answer);
-
 const submitAnswer = () => {
   emit("store-answer", {
     question: props.questions.results[currentQuestion.value],
@@ -25,6 +23,7 @@ const submitAnswer = () => {
   selectedOption.value = null;
 
   if (currentQuestion.value === props.questions.results.length - 1) {
+    currentQuestion.value = 0;
     emit("end-quiz");
   } else {
     currentQuestion.value++;

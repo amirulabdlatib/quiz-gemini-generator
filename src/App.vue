@@ -93,6 +93,13 @@ const startQuiz = async (topic) => {
     status.value = "start";
   }
 };
+
+const restartQuiz = () => {
+  questions.value = "";
+  status.value = "start";
+  userAnswers.value = [];
+  errorMessage.value = "";
+};
 </script>
 
 <template>
@@ -108,5 +115,5 @@ const startQuiz = async (topic) => {
   <StartScreen v-if="status == 'start'" :errorMessage="errorMessage" @start-quiz="startQuiz" />
   <Loader v-if="status == 'loading'" />
   <Quiz v-if="status == 'ready'" @end-quiz="status = 'finished'" @store-answer="storeAnswer" :questions="questions" />
-  <Result v-if="status == 'finished'" :userAnswers="userAnswers" />
+  <Result v-if="status == 'finished'" :userAnswers="userAnswers" @restart-quiz="restartQuiz" />
 </template>

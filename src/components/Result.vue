@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 
 const props = defineProps(["userAnswers"]);
+const emit = defineEmits(["restart-quiz"]);
 
 const correctAnswersCount = computed(()=>{
   return props.userAnswers.filter(answer=>answer.userAnswer === answer.question.correct_answer).length;
@@ -21,5 +22,8 @@ const correctAnswersCount = computed(()=>{
         <p>Correct answer: {{ answer.question.correct_answer }}</p>
       </li>
     </ul>
+
+    <button @click="emit('restart-quiz')">Create a New Quiz</button>
+
   </section>
 </template>
