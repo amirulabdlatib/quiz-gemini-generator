@@ -9,6 +9,7 @@ import { ref } from "vue";
 const questions = ref("");
 const status = ref("start");
 const userAnswers = ref([]);
+const errorMessage = ref("");
 
 const storeAnswer = (answer) => {
   userAnswers.value.push(answer);
@@ -83,10 +84,14 @@ const startQuiz = async (topic) => {
     },
   });
 
-  const result = await model.generateContent(`Create 5 quiz questions about ${topic} Difficulty: Easy to Medium Type: Multiple Choice`);
-
-  questions.value = JSON.parse(result.response.text());
-  status.value = "ready";
+  try {
+    const result = await model.generateContent(`Create 5 quiz questions about ${topic} Difficulty: Easy to Medium Type: Multiple Choice`);
+    questions.value = JSON.parse(result.response.text());
+    status.value = "ready";
+  } catch (error) {
+    errorMessage.value = error;
+    status.value = "start";
+  }
 };
 </script>
 
@@ -100,7 +105,7 @@ const startQuiz = async (topic) => {
     </header>
   </div>
 
-  <StartScreen v-if="status == 'start'" @start-quiz="startQuiz" />
+  <StartScreen v-if="status == 'start'" :errorMessage="errorMessage" @start-quiz="startQuiz" />
   <Loader v-if="status == 'loading'" />
   <Quiz v-if="status == 'ready'" @end-quiz="status = 'finished'" @store-answer="storeAnswer" :questions="questions" />
   <Result v-if="status == 'finished'" :userAnswers="userAnswers" />
